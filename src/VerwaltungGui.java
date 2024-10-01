@@ -11,23 +11,21 @@ public class VerwaltungGui {
         frame.setVisible(true);
 
         //create title panel
-        JPanel titlePanel = new JPanel();
-        titlePanel.setBackground(new Color(41, 128, 185));
-        JLabel titleLabel = new JLabel("Mitarbeiterverwaltung");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setForeground(Color.WHITE);
-        titlePanel.add(titleLabel);
+        TitlePanel titlePanel = new TitlePanel("Mitarbeiterverwaltung", 24);
+        frame.add(titlePanel, BorderLayout.NORTH);
+
+        //create add and save mitarbeiter
+        JButton addMitarbeiterButton = new JButton("Mitarbeiter hinzufügen");
+        addMitarbeiterButton.addActionListener(e -> {
+            AddMitarbeiterDialog dialog = new AddMitarbeiterDialog();
+            dialog.show();
+        });
+        frame.add(addMitarbeiterButton, BorderLayout.CENTER);
+
 
         //create bottom panel
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setBackground(new Color(41, 128, 185));
-        JLabel bottomLabel = new JLabel("© Mitarbeiterverwaltung 2024");
-        bottomLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        bottomLabel.setForeground(Color.WHITE);
-        bottomPanel.add(bottomLabel);
-
-        //add panels to frame
-        frame.add(titlePanel, BorderLayout.NORTH);
+        TitlePanel bottomPanel = new TitlePanel("© 2021 Mitarbeiterverwaltung", 12);
         frame.add(bottomPanel, BorderLayout.SOUTH);
     }
 }
+
