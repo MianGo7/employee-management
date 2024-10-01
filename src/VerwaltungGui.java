@@ -18,7 +18,16 @@ public class VerwaltungGui extends JFrame {
 
         add(new TitlePanel("Mitarbeiterverwaltung", 24), BorderLayout.NORTH);
 
+        //content panel
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        //add Mitarbeiter button
         JButton addMitarbeiterButton = new JButton("Mitarbeiter hinzufügen");
+        addMitarbeiterButton.setPreferredSize(new Dimension(200, 50));
+        addMitarbeiterButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
         addMitarbeiterButton.addActionListener(e -> new AddMitarbeiterDialog(this));
         add(addMitarbeiterButton, BorderLayout.CENTER);
 
