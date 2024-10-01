@@ -1,31 +1,35 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 
-public class VerwaltungGui {
-    public static void gui() {
-        //create main frame
-        JFrame frame = new JFrame("Mitarbeiterverwaltung");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1366, 768);
-        frame.setLayout(new BorderLayout(10, 10));
-        frame.setVisible(true);
+public class VerwaltungGui extends JFrame {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-        //create title panel
-        TitlePanel titlePanel = new TitlePanel("Mitarbeiterverwaltung", 24);
-        frame.add(titlePanel, BorderLayout.NORTH);
+    public VerwaltungGui() {
+        initComponents();
+    }
 
-        //create add and save mitarbeiter
+    private void initComponents() {
+        setTitle("Mitarbeiterverwaltung");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1366, 768);
+        setLayout(new BorderLayout(10, 10));
+
+        add(new TitlePanel("Mitarbeiterverwaltung", 24), BorderLayout.NORTH);
+
         JButton addMitarbeiterButton = new JButton("Mitarbeiter hinzufügen");
-        addMitarbeiterButton.addActionListener(e -> {
-            AddMitarbeiterDialog dialog = new AddMitarbeiterDialog();
-            dialog.show();
+        addMitarbeiterButton.addActionListener(e -> new AddMitarbeiterDialog(this));
+        add(addMitarbeiterButton, BorderLayout.CENTER);
+
+        add(new TitlePanel("© 2024 Mitarbeiterverwaltung", 12), BorderLayout.SOUTH);
+    }
+
+    public static void createAndShowGUI() {
+        SwingUtilities.invokeLater(() -> {
+            VerwaltungGui frame = new VerwaltungGui();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
-        frame.add(addMitarbeiterButton, BorderLayout.CENTER);
-
-
-        //create bottom panel
-        TitlePanel bottomPanel = new TitlePanel("© 2021 Mitarbeiterverwaltung", 12);
-        frame.add(bottomPanel, BorderLayout.SOUTH);
     }
 }
-
