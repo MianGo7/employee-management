@@ -1,32 +1,42 @@
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serial;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class ShowMitarbeiterTable extends JPanel {
     @Serial
     private static final long serialVersionUID = 1L;
+    private DefaultTableModel tableModel;
 
-    public ShowMitarbeiterTable() {
-        initComponents();
+  public ShowMitarbeiterTable(List<Abteilung> abteilungen) {
+        initComponents(abteilungen);
     }
 
-    private void initComponents() {
+    private void initComponents(List<Abteilung> abteilungen) {
         setLayout(new BorderLayout());
 
-        JTable mitarbeiterTable = new JTable();
+        String[] columns = {"ID", "Name", "Abteilung", "Typ"};
+        tableModel = new DefaultTableModel(columns, 0);
 
-        String[] columns = {"ID", "Name", "Age", "Department"};
-        Object[][] data = {
-                {1, "Alice", 25, "Engineering"},
-                {2, "Bob", 30, "Human Resources"},
-                {3, "Charlie", 22, "Sales"},
-                {4, "David", 35, "Marketing"}
-        };
+        updateTableModel(abteilungen);
 
-        mitarbeiterTable.setModel(new DefaultTableModel(data, columns));
+        JTable mitarbeiterTable = new JTable(tableModel);
 
         JScrollPane scrollPane = new JScrollPane(mitarbeiterTable);
         add(scrollPane, BorderLayout.CENTER);
+    }
+
+    public void updateTableModel(List<Abteilung> abteilungen) {
+        tableModel.setRowCount(0); // Clear the table
+
+        for (Abteilung abteilung : abteilungen) {
+            for (Mitarbeiter mitarbeiter : abteilung.getMitarbeiter()) {
+                Object[] data = {mitarbeiter.getID(), mitarbeiter.getName(), abteilung.getName(), mitarbeiter.getType()};
+                tableModel.addRow(data);
+            }
+        }
     }
 }

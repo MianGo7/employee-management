@@ -1,3 +1,4 @@
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serial;
@@ -11,16 +12,19 @@ public class AddMitarbeiterDialog extends JDialog {
   private JTextField nameField;
   private JTextField idField;
   private JComboBox<MitarbeiterTyp> typeComboBox;
+  private JComboBox<Abteilung> abteilungComboBox;
   private JButton saveButton;
   private JPanel dynamicFieldsPanel;
   private Map<String, JTextField> dynamicFields;
+  private ShowMitarbeiterTable mitarbeiterTable;
 
-  public AddMitarbeiterDialog(JFrame parent) {
+  public AddMitarbeiterDialog(JFrame parent, List<Abteilung> abteilungen, ShowMitarbeiterTable mitarbeiterTable) {
     super(parent, "Mitarbeiter hinzufügen", true);
-    initComponents();
+    this.mitarbeiterTable = mitarbeiterTable;
+    initComponents(abteilungen);
   }
 
-  private void initComponents() {
+  private void initComponents(List<Abteilung> abteilungen) {
     setSize(800, 650);
     setLayout(new BorderLayout());
 
@@ -32,6 +36,10 @@ public class AddMitarbeiterDialog extends JDialog {
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
 
+    JLabel abteilungLabel = new JLabel("Abteilung:");
+    abteilungComboBox = new JComboBox<>(abteilungen.toArray(new Abteilung[0]));
+    abteilungComboBox.setSelectedItem(null);
+
     JLabel typeLabel = new JLabel("Typ:");
     typeComboBox = new JComboBox<>(MitarbeiterTyp.values());
     typeComboBox.setSelectedItem(null);
@@ -41,51 +49,65 @@ public class AddMitarbeiterDialog extends JDialog {
     idField = new JTextField(30);
     saveButton = new JButton("Hinzufügen");
 
+    // Disable fields initially
     nameField.setEnabled(false);
     idField.setEnabled(false);
     saveButton.setEnabled(false);
 
+    // Add components to panel
     gbc.gridx = 0;
     gbc.gridy = 0;
+    contentPanel.add(abteilungLabel, gbc);
+
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    contentPanel.add(abteilungComboBox, gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy = 1;
     contentPanel.add(typeLabel, gbc);
 
     gbc.gridx = 1;
-    gbc.gridy = 0;
+    gbc.gridy = 1;
     contentPanel.add(typeComboBox, gbc);
 
     gbc.gridx = 0;
-    gbc.gridy = 1;
+    gbc.gridy = 2;
     contentPanel.add(nameLabel, gbc);
 
     gbc.gridx = 1;
-    gbc.gridy = 1;
+    gbc.gridy = 2;
     contentPanel.add(nameField, gbc);
 
     gbc.gridx = 0;
-    gbc.gridy = 2;
+    gbc.gridy = 3;
     contentPanel.add(idLabel, gbc);
 
     gbc.gridx = 1;
-    gbc.gridy = 2;
+    gbc.gridy = 3;
     contentPanel.add(idField, gbc);
 
+    // Dynamic fields panel
     dynamicFieldsPanel = new JPanel(new GridBagLayout());
     gbc.gridx = 0;
-    gbc.gridy = 3;
+    gbc.gridy = 4;
     gbc.gridwidth = 2;
     contentPanel.add(dynamicFieldsPanel, gbc);
 
+    // Save button
     gbc.gridx = 1;
-    gbc.gridy = 4;
+    gbc.gridy = 5;
     gbc.gridwidth = 2;
     contentPanel.add(saveButton, gbc);
 
+    // Initialize dynamic fields map
     dynamicFields = new HashMap<>();
 
+    // Add action listeners
     typeComboBox.addActionListener(e -> updateDynamicFields());
+    saveButton.addActionListener(e -> validateAndSave(abteilungen));
 
-    saveButton.addActionListener(e -> validateAndSave());
-
+    // Add content panel to dialog
     add(contentPanel, BorderLayout.CENTER);
     add(new TitlePanel("© Mitarbeiterverwaltung 2024", 12), BorderLayout.SOUTH);
 
@@ -140,10 +162,16 @@ public class AddMitarbeiterDialog extends JDialog {
     dynamicFields.put(labelText, field);
   }
 
-  private void validateAndSave() {
+  private void validateAndSave(List <Abteilung> abteilungen) {
     String name = nameField.getText();
     String id = idField.getText();
     MitarbeiterTyp type = (MitarbeiterTyp) typeComboBox.getSelectedItem();
+    Abteilung abteilung = (Abteilung) abteilungComboBox.getSelectedItem();
+
+    if (abteilung == null) {
+      JOptionPane.showMessageDialog(this, "Bitte wählen Sie eine Abteilung aus.");
+      return;
+    }
 
     if (name.isEmpty() || !name.matches("[A-Za-z ]+")) {
       JOptionPane.showMessageDialog(this,
@@ -162,6 +190,7 @@ public class AddMitarbeiterDialog extends JDialog {
     }
 
     try {
+      Mitarbeiter mitarbeiter = null;
       switch (type) {
         case BUERO -> {
           String festgehalt = dynamicFields.get("Festgehalt").getText();
@@ -170,7 +199,7 @@ public class AddMitarbeiterDialog extends JDialog {
                 "Festgehalt muss eine Zahl sein und nicht leer sein.");
             return;
           }
-          new BueroArbeiter(Integer.parseInt(id), name, Integer.parseInt(festgehalt));
+          mitarbeiter = new BueroArbeiter(Integer.parseInt(id), name, Integer.parseInt(festgehalt));
         }
         case MANAGER -> {
           String festgehalt = dynamicFields.get("Festgehalt").getText();
@@ -184,7 +213,7 @@ public class AddMitarbeiterDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Bonus muss eine Zahl sein und nicht leer sein.");
             return;
           }
-          new Manager(Integer.parseInt(id), name, Integer.parseInt(festgehalt),
+          mitarbeiter = new Manager(Integer.parseInt(id), name, Integer.parseInt(festgehalt),
               Integer.parseInt(bonus));
         }
         case SCHICHT -> {
@@ -194,7 +223,7 @@ public class AddMitarbeiterDialog extends JDialog {
                 "Stundensatz muss eine Zahl sein und nicht leer sein.");
             return;
           }
-          new SchichtArbeiter(Integer.parseInt(id), name, Integer.parseInt(stundensatz));
+          mitarbeiter = new SchichtArbeiter(Integer.parseInt(id), name, Integer.parseInt(stundensatz));
         }
         case FAHRER -> {
           String klasse = dynamicFields.get("Führerschein Klasse (B, C, D)").getText();
@@ -204,14 +233,18 @@ public class AddMitarbeiterDialog extends JDialog {
                 "Führerschein Klasse muss B, C oder D sein und nicht leer sein.");
             return;
           }
-          new Fahrer(Integer.parseInt(id), name, Integer.parseInt(stundensatz), klasse);
+          mitarbeiter = new Fahrer(Integer.parseInt(id), name, Integer.parseInt(stundensatz), klasse);
         }
         default -> throw new IllegalArgumentException("Ungültiger Mitarbeiter-Typ.");
       }
+
+      abteilung.add(mitarbeiter);
       JOptionPane.showMessageDialog(this, "Mitarbeiter erfolgreich hinzugefügt!");
+      mitarbeiterTable.updateTableModel(abteilungen);
       dispose(); // Close the dialog after successful addition
     } catch (IllegalArgumentException e) {
       JOptionPane.showMessageDialog(this, e.getMessage());
     }
   }
+
 }

@@ -57,4 +57,13 @@ public class Abteilung {
         liste += "\nDurchschnittsgehalt: " + summe / (mitarbeiter.size() + 1);
         return liste;
     }
+
+    public ArrayList<Mitarbeiter> getMitarbeiter() {
+        return new ArrayList<>(mitarbeiter); // Kopie zur Vermeidung von Seiteneffekten
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
