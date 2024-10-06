@@ -1,7 +1,11 @@
+package components;
+
 import java.awt.*;
 import javax.swing.*;
 import java.io.Serial;
 import java.util.List;
+import models.Abteilung;
+import models.Manager;
 
 public class AddAbteilungDialog extends JDialog {
   @Serial

@@ -1,3 +1,7 @@
+package models;
+
+import enums.MitarbeiterTyp;
+
 public class Fahrer extends SchichtArbeiter {
     private String fuehrerSchein;
     private static String[] gueltigeKlassen = {"B", "C", "D"};
@@ -44,7 +48,7 @@ public class Fahrer extends SchichtArbeiter {
     }
 
     @Override
-    protected MitarbeiterTyp getType() {
+    public MitarbeiterTyp getType() {
         return MitarbeiterTyp.FAHRER;
     }
 }

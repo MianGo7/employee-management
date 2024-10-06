@@ -1,8 +1,16 @@
+package controllers;
+
+import components.AddAbteilungDialog;
+import components.AddMitarbeiterDialog;
+import components.Button;
+import components.ShowMitarbeiterTable;
+import components.TitlePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+import models.Abteilung;
 
 public class VerwaltungGui extends JFrame {
     @Serial

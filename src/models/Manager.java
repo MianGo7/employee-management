@@ -1,3 +1,7 @@
+package models;
+
+import enums.MitarbeiterTyp;
+
 public class Manager extends BueroArbeiter {
 
     private double bonusSatz;
@@ -58,7 +62,7 @@ public class Manager extends BueroArbeiter {
     }
 
     @Override
-    protected MitarbeiterTyp getType() {
+    public MitarbeiterTyp getType() {
         return MitarbeiterTyp.MANAGER;
     }
 }

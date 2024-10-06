@@ -1,3 +1,7 @@
+package models;
+
+import enums.MitarbeiterTyp;
+
 public abstract class Mitarbeiter {
 
     private int id;
@@ -69,7 +73,7 @@ public abstract class Mitarbeiter {
         return ("\nID: " + id + " Name: " + name);
     }
 
-    protected abstract MitarbeiterTyp getType();
+    public abstract MitarbeiterTyp getType();
 
     public String toCSVString() {
         String result = "";

@@ -1,3 +1,7 @@
+package models;
+
+import enums.MitarbeiterTyp;
+
 public class BueroArbeiter extends Mitarbeiter {
 
     private double festgehalt;
@@ -43,7 +47,7 @@ public class BueroArbeiter extends Mitarbeiter {
     }
 
     @Override
-    protected MitarbeiterTyp getType() {
+    public MitarbeiterTyp getType() {
         return MitarbeiterTyp.BUERO;
     }
 }

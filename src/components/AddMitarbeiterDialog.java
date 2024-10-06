@@ -1,9 +1,13 @@
+package components;
+
+import enums.MitarbeiterTyp;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
+import models.*;
 
 public class AddMitarbeiterDialog extends JDialog {
 
@@ -129,13 +133,13 @@ public class AddMitarbeiterDialog extends JDialog {
       gbc.insets = new Insets(5, 5, 5, 5);
 
       switch (type) {
-        case BUERO -> addDynamicField("Festgehalt", gbc);
-        case MANAGER -> {
+        case MitarbeiterTyp.BUERO -> addDynamicField("Festgehalt", gbc);
+        case MitarbeiterTyp.MANAGER -> {
           addDynamicField("Festgehalt", gbc);
           addDynamicField("Bonus", gbc);
         }
-        case SCHICHT -> addDynamicField("Stundensatz", gbc);
-        case FAHRER -> {
+        case MitarbeiterTyp.SCHICHT -> addDynamicField("Stundensatz", gbc);
+        case MitarbeiterTyp.FAHRER -> {
           addDynamicField("Führerschein Klasse (B, C, D)", gbc);
           addDynamicField("Stundensatz", gbc);
         }
@@ -192,7 +196,7 @@ public class AddMitarbeiterDialog extends JDialog {
     try {
       Mitarbeiter mitarbeiter = null;
       switch (type) {
-        case BUERO -> {
+        case MitarbeiterTyp.BUERO -> {
           String festgehalt = dynamicFields.get("Festgehalt").getText();
           if (festgehalt.isEmpty() || !festgehalt.matches("\\d+")) {
             JOptionPane.showMessageDialog(this,
@@ -201,7 +205,7 @@ public class AddMitarbeiterDialog extends JDialog {
           }
           mitarbeiter = new BueroArbeiter(Integer.parseInt(id), name, Integer.parseInt(festgehalt));
         }
-        case MANAGER -> {
+        case MitarbeiterTyp.MANAGER -> {
           String festgehalt = dynamicFields.get("Festgehalt").getText();
           String bonus = dynamicFields.get("Bonus").getText();
           if (festgehalt.isEmpty() || !festgehalt.matches("\\d+")) {
@@ -216,7 +220,7 @@ public class AddMitarbeiterDialog extends JDialog {
           mitarbeiter = new Manager(Integer.parseInt(id), name, Integer.parseInt(festgehalt),
               Integer.parseInt(bonus));
         }
-        case SCHICHT -> {
+        case MitarbeiterTyp.SCHICHT -> {
           String stundensatz = dynamicFields.get("Stundensatz").getText();
           if (stundensatz.isEmpty() || !stundensatz.matches("\\d+")) {
             JOptionPane.showMessageDialog(this,
@@ -225,7 +229,7 @@ public class AddMitarbeiterDialog extends JDialog {
           }
           mitarbeiter = new SchichtArbeiter(Integer.parseInt(id), name, Integer.parseInt(stundensatz));
         }
-        case FAHRER -> {
+        case MitarbeiterTyp.FAHRER -> {
           String klasse = dynamicFields.get("Führerschein Klasse (B, C, D)").getText();
           String stundensatz = dynamicFields.get("Stundensatz").getText();
           if (klasse.isEmpty() || !klasse.matches("[BCD]")) {

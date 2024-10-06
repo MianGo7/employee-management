@@ -1,3 +1,7 @@
+package models;
+
+import enums.MitarbeiterTyp;
+
 public class SchichtArbeiter extends Mitarbeiter {
 
     private double stundenSatz;
@@ -75,7 +79,7 @@ public class SchichtArbeiter extends Mitarbeiter {
     }
 
     @Override
-    protected MitarbeiterTyp getType() {
+    public MitarbeiterTyp getType() {
         return MitarbeiterTyp.SCHICHT;
     }
 }

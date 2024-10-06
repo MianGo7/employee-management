@@ -1,10 +1,12 @@
-import java.util.ArrayList;
+package components;
+
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serial;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import models.Abteilung;
+import models.Mitarbeiter;
 
 public class ShowMitarbeiterTable extends JPanel {
     @Serial
