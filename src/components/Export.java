@@ -35,6 +35,8 @@ public class Export {
         writer.append(String.join(",", "ID", "Name", "Abteilung", "Typ", "Einkommen"));
         writer.append("\n");
 
+        double gesamtEinkommen = 0;
+
         // Write data for each Mitarbeiter
         for (Abteilung abteilung : abteilungen) {
           for (Mitarbeiter mitarbeiter : abteilung.getMitarbeiter()) {
@@ -43,11 +45,16 @@ public class Export {
                 mitarbeiter.getName(),
                 abteilung.getName(),
                 mitarbeiter.getType().toString(),
-                String.valueOf(mitarbeiter.einkommen())
+                mitarbeiter.einkommen() + "€"
             ));
             writer.append("\n");
+            gesamtEinkommen += mitarbeiter.einkommen();
           }
         }
+
+        // Write total income
+        writer.append(String.join(",", "", "", "", "", "Gesamt " + gesamtEinkommen + "€"));
+        writer.append("\n");
 
         writer.flush();
         JOptionPane.showMessageDialog(null, "Export erfolgreich abgeschlossen.", "Export", JOptionPane.INFORMATION_MESSAGE);

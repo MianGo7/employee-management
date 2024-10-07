@@ -34,11 +34,17 @@ public class ShowMitarbeiterTable extends JPanel {
     public void updateTableModel(List<Abteilung> abteilungen) {
         tableModel.setRowCount(0); // Clear the table
 
+      double gesamtEinkommen = 0;
+
         for (Abteilung abteilung : abteilungen) {
             for (Mitarbeiter mitarbeiter : abteilung.getMitarbeiter()) {
-                Object[] data = {mitarbeiter.getID(), mitarbeiter.getName(), abteilung.getName(), mitarbeiter.getType(), mitarbeiter.einkommen()};
+                Object[] data = {mitarbeiter.getID(), mitarbeiter.getName(), abteilung.getName(), mitarbeiter.getType(), mitarbeiter.einkommen() + "€"};
                 tableModel.addRow(data);
+                gesamtEinkommen += mitarbeiter.einkommen();
             }
         }
+
+        Object[] data = {"", "", "", "", "Gesamt " + gesamtEinkommen + "€"};
+        tableModel.addRow(data);
     }
 }
