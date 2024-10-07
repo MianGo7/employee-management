@@ -3,6 +3,7 @@ package controllers;
 import components.AddAbteilungDialog;
 import components.AddMitarbeiterDialog;
 import components.Button;
+import components.Export;
 import components.ShowMitarbeiterTable;
 import components.TitlePanel;
 import javax.swing.*;
@@ -59,6 +60,8 @@ public class VerwaltungGui extends JFrame {
     private JPanel getjPanel() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
+        //Button to export data to csv
+        Button exportButton = new Button("Exportieren", e -> new Export(abteilungen));
 
         // Button to add Mitarbeiter
         Button addMitarbeiterButton = new Button("Mitarbeiter hinzufügen", e -> new AddMitarbeiterDialog(this, abteilungen, showMitarbeiterTable));
@@ -67,6 +70,7 @@ public class VerwaltungGui extends JFrame {
         Button addAbteilungButton = new Button("Abteilung hinzufügen", e -> new AddAbteilungDialog(this, abteilungen));
 
         // Add the buttons to the button panel
+        buttonPanel.add(exportButton);
         buttonPanel.add(addMitarbeiterButton);
         buttonPanel.add(addAbteilungButton);
         return buttonPanel;
