@@ -20,7 +20,7 @@ public class ShowMitarbeiterTable extends JPanel {
     private void initComponents(List<Abteilung> abteilungen) {
         setLayout(new BorderLayout());
 
-        String[] columns = {"ID", "Name", "Abteilung", "Typ"};
+        String[] columns = {"ID", "Name", "Abteilung", "Typ", "Einkommen"};
         tableModel = new DefaultTableModel(columns, 0);
 
         updateTableModel(abteilungen);
@@ -36,7 +36,7 @@ public class ShowMitarbeiterTable extends JPanel {
 
         for (Abteilung abteilung : abteilungen) {
             for (Mitarbeiter mitarbeiter : abteilung.getMitarbeiter()) {
-                Object[] data = {mitarbeiter.getID(), mitarbeiter.getName(), abteilung.getName(), mitarbeiter.getType()};
+                Object[] data = {mitarbeiter.getID(), mitarbeiter.getName(), abteilung.getName(), mitarbeiter.getType(), mitarbeiter.einkommen()};
                 tableModel.addRow(data);
             }
         }
