@@ -67,7 +67,7 @@ public class VerwaltungGui extends JFrame {
         Button addMitarbeiterButton = new Button("Mitarbeiter hinzufügen", e -> new AddMitarbeiterDialog(this, abteilungen, showMitarbeiterTable));
 
         // Button to add Abteilung
-        Button addAbteilungButton = new Button("Abteilung hinzufügen", e -> new AddAbteilungDialog(this, abteilungen));
+        Button addAbteilungButton = new Button("Abteilung hinzufügen", e -> new AddAbteilungDialog(this, abteilungen, showMitarbeiterTable));
 
         // Add the buttons to the button panel
         buttonPanel.add(exportButton);

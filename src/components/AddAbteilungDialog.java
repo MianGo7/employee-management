@@ -16,10 +16,12 @@ public class AddAbteilungDialog extends JDialog {
   private JTextField managerFestgehaltField;
   private JTextField managerBonusField;
   private List<Abteilung> abteilungen;
+  private ShowMitarbeiterTable mitarbeiterTable;
 
-  public AddAbteilungDialog(JFrame parent, List<Abteilung> abteilungen) {
+  public AddAbteilungDialog(JFrame parent, List<Abteilung> abteilungen, ShowMitarbeiterTable mitarbeiterTable) {
     super(parent, "Abteilung hinuzufügen", true);
     this.abteilungen = abteilungen;
+    this.mitarbeiterTable = mitarbeiterTable;
     initComponents();
   }
 
@@ -133,9 +135,11 @@ public class AddAbteilungDialog extends JDialog {
     }
 
     try {
-      Abteilung abteilung = new Abteilung(name, new Manager(Integer.parseInt(managerId), managerName,
-          Integer.parseInt(managerFestgehalt), Integer.parseInt(managerBonus)));
+      Manager manager = new Manager(Integer.parseInt(managerId), managerName, Integer.parseInt(managerFestgehalt), Integer.parseInt(managerBonus));
+      Abteilung abteilung = new Abteilung(name, manager);
+      abteilung.add(manager);
       abteilungen.add(abteilung);
+      mitarbeiterTable.updateTableModel(abteilungen);
       JOptionPane.showMessageDialog(this, "Abteilung hinzugefügt.");
       dispose();
     } catch (IllegalArgumentException e) {
